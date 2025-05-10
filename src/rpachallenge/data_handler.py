@@ -3,7 +3,7 @@ import pandas as pd
 from requests import get
 
 
-def handle_file(name, path):
+def initialize_data_folder(name, path):
     """Check if folder and file exist."""
     if not (os.path.exists(path)):
         # create a new directory if not exist already

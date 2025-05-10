@@ -7,14 +7,57 @@
 
 ## Table of Contents
 
+- [Features](#features)
 - [Installation](#installation)
+- [Usage](#usage)
+- [Acknowledgements](#acknowledgements)
+- [Project Structure](#project_structure)
 - [License](#license)
+
+## Features
+
+This project automatically downloads the Excel file from the RPAChallenge website. It reads and processes the Excel data using Pandas, and fills out the web form dynamically using Selenium.
 
 ## Installation
 
-```console
-pip install rpachallenge
-```
+1. Clone the repository using
+   git clone https://github.com/FIXTHIS/rpachallenge.git
+
+2. Create a virtual environment using Python 3.10 or higher:
+    python 3.10 -m venv .venv
+    Activate on Windows with 
+    .venv\Scripts\activate
+
+3. Install the required dependencies using
+    pip install -r requirements.txt
+
+4. Install the project in editable mode for your usage with
+    pip install -e .
+
+## Usage
+
+- Run the main script from run.py:
+    python src/rpachallenge/run.py.
+
+## Acknowledgements
+
+- [Selenium](https://www.selenium.dev/) for browser automation.
+- [WebDriver Manager](https://github.com/SergeyPirogov/webdriver_manager) for automatically managing browser drivers.
+- [Pandas](https://pandas.pydata.org/) for data manipulation.
+- [RPAChallenge](https://www.rpachallenge.com/) for providing the challenge.
+
+## Project Structure
+
+rpachallenge/
+├── src/
+│   ├── rpachallenge/
+│   │   ├── __about__.py
+│   │   ├── __init__.py
+│   │   ├── run.py
+│   │   ├── data_handler.py
+│   │   ├── web_handler.py
+│   ├── requirements.txt
+├── README.md
 
 ## License
 

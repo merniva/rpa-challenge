@@ -5,3 +5,4 @@ webdriver-manager
 openpyxl
 lxml
 black
+pytest
