@@ -4,3 +4,4 @@ requests
 webdriver-manager
 openpyxl
 lxml
+black
