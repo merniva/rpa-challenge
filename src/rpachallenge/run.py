@@ -2,11 +2,16 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-#from bs4 import BeautifulSoup
-from requests import get
-import time
+from data_handler import handle_file, read_file_to_dataframe
+import logging
 import os
-import pandas as pd
+
+logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+
+SITE_URL = "https://www.rpachallenge.com/"
+FILE_URL = "https://rpachallenge.com/assets/downloadFiles/challenge.xlsx"
+FILE_PATH = os.path.join(os.getcwd(), "test_data")
+FILE_NAME = os.path.join(FILE_PATH, "challenge.xlsx")
 
 def setup_browser():
     """Initializes the webdriver."""
@@ -18,46 +23,35 @@ def teardown_browser(driver):
     """Closes the current browser session."""
     driver.quit()
 
-def handle_file(name, path):
-    """Check if folder and file exist."""
-    if not (os.path.exists(path)):
-    # create a new directory if not exist already
-        os.makedirs(path)
-    if os.path.isfile(name):
-    # make sure to remove any old versions
-        os.remove(name)
+def fill_the_form(driver, row):
+    """Fill the form with row information from excel."""
+    fields = {"labelFirstName": row['First Name'], 
+              "labelLastName": row['Last Name '], 
+              "labelCompanyName": row['Company Name'], 
+              "labelRole": row['Role in Company'], 
+              "labelAddress": row['Address'], 
+              "labelEmail": row['Email'], 
+              "labelPhone": row['Phone Number']
+              }
+    for field, value in fields.items():
+        xpath = f"//input[@ng-reflect-name='{field}']"
+        driver.find_element(By.XPATH, xpath).send_keys(str(value))
+    driver.find_element(By.XPATH, "//input[@type='submit' and @value='Submit']").click()
 
-# download the file and read the excel file into dataframe
-FILE_URL = "https://rpachallenge.com/assets/downloadFiles/challenge.xlsx"
-FILE_PATH = os.path.join(os.getcwd(), "test_data")
-FILE_NAME = os.path.join(FILE_PATH, "challenge.xlsx")
+# fetch the input from excel
 handle_file(FILE_NAME, FILE_PATH)
-file_response = get(FILE_URL, timeout=10)
-with open(FILE_NAME, mode="wb") as file:
-    file.write(file_response.content)
-df = pd.read_excel(FILE_NAME)
+df = read_file_to_dataframe(FILE_NAME, FILE_URL)
 
 # open the page
-SITE_URL = "https://www.rpachallenge.com/"
 driver = setup_browser()
-web_form = driver.get(SITE_URL).content
+driver.get(SITE_URL)
 
-# loop through excel rows, input info and submit
+# iterate and fill the input form
 if driver.find_element(By.XPATH, "//button[contains(text(), 'Start')]"):
     driver.find_element(By.XPATH, "//button[contains(text(), 'Start')]").click()
 for row in (df.to_dict(orient="records")):
-    print("Handling row:")
-    print(row['First Name'], row['Last Name '], row['Company Name'], row['Role in Company'], row['Address'], row['Email'], row['Phone Number'])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelFirstName']").send_keys(row['First Name'])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelLastName']").send_keys(row['Last Name '])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelCompanyName']").send_keys(row['Company Name'])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelRole']").send_keys(row['Role in Company'])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelAddress']").send_keys(row['Address'])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelEmail']").send_keys(row['Email'])
-    driver.find_element(By.XPATH, "//input[@ng-reflect-name='labelPhone']").send_keys(row['Phone Number'])
-    #time.sleep(5)
-    driver.find_element(By.XPATH, "//input[@type='submit' and @value='Submit']").click()
-time.sleep(5)
+    logging.info(f"Handling row: {row}")
+    fill_the_form(driver, row)
 
 #remove the existing file
 handle_file(FILE_NAME, FILE_PATH)
