@@ -11,14 +11,20 @@ FILE_URL = f"{SITE_URL}/assets/downloadFiles/challenge.xlsx"
 FILE_PATH = os.path.join(os.getcwd(), "input_data")
 FILE_NAME = os.path.join(FILE_PATH, "challenge.xlsx")
 
+
 def limit_iterations(value):
     """A helper function for checking that iteration amount is between 1 and 10."""
     iteration_value = int(value)
     if iteration_value <= 0:
-        raise argparse.ArgumentTypeError(f"Invalid value: {value}. Value must be a positive integer!")
+        raise argparse.ArgumentTypeError(
+            f"Invalid value: {value}. Value must be a positive integer!"
+        )
     if iteration_value > 10:
-        raise argparse.ArgumentTypeError(f"Invalid value: {value}. Maximum allowed iterations is 10!")
+        raise argparse.ArgumentTypeError(
+            f"Invalid value: {value}. Maximum allowed iterations is 10!"
+        )
     return iteration_value
+
 
 def parse_arguments():
     """Parse command-line arguments."""
@@ -68,22 +74,22 @@ def main():
                     success_count += 1
                 except Exception as e:
                     logging.error(
-                        "Unexpected error occurred on row: %s! Error message: %s", row, e
+                        "Unexpected error occurred on row: %s! Error message: %s",
+                        row,
+                        e,
                     )
             end_time = time.time()
             execution_time = (end_time - start_time) * 1000
-            logging.info(
-                "%d/%d rows successfully executed and forms filled in %.2f ms.",
-                success_count, len(df), execution_time
+            print(
+                f"{success_count}/{len(df)} rows successfully executed and forms filled in {execution_time:.2f} ms."
             )
             # remove the existing file
             initialize_data_folder(FILE_NAME, FILE_PATH)
             teardown_browser(driver)
     except Exception as e:
-            logging.error("Critical error occurred! Error message: %s", e)
+        logging.error("Critical error occurred! Error message: %s", e)
     finally:
-        logging.info("All iterations completed!")
-            
+        print("All iterations completed!")
 
 
 if __name__ == "__main__":

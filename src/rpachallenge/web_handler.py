@@ -1,5 +1,4 @@
 import logging
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -35,6 +34,7 @@ def start_submit(driver):
 
 def fill_the_form(driver, row):
     """Fill the form with row information from excel."""
+    xpath_root = "//input[@ng-reflect-name="
     fields = {
         "labelFirstName": row["First Name"],
         "labelLastName": row["Last Name "],
@@ -45,17 +45,15 @@ def fill_the_form(driver, row):
         "labelPhone": row["Phone Number"],
     }
 
-    input_elements = {
-        field: driver.find_element(By.XPATH, f"//input[@ng-reflect-name='{field}']")
-        for field in fields.keys()
-    }
-
     for field, value in fields.items():
         try:
-            input_elements[field].send_keys(str(value))
+            element = driver.find_element(By.XPATH, f"{xpath_root}'{field}']")
+            element.send_keys(str(value))
         except Exception as e:
             logging.error(
                 "Exception occurred with customer %s %s, error message: %s!",
-                row["First Name"], row["Last Name "], e
+                row["First Name"],
+                row["Last Name "],
+                e,
             )
     driver.find_element(By.XPATH, "//input[@type='submit' and @value='Submit']").click()
