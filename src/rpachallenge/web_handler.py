@@ -4,13 +4,20 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-import time
 
 
-def setup_browser():
+def setup_browser(headless=False):
     """Initializes the webdriver."""
+    options = webdriver.ChromeOptions()
+    if headless:
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-extensions")
+
     service = Service(ChromeDriverManager().install())
-    browser_driver = webdriver.Chrome(service=service)
+    browser_driver = webdriver.Chrome(service=service, options=options)
     return browser_driver
 
 
@@ -27,7 +34,7 @@ def start_submit(driver):
         )
         start_button.click()
     except Exception as e:
-        logging.error(f"Unexpected error occurred! Error message: {e}")
+        logging.error("Unexpected error occurred! Error message: %s", e)
 
 
 def fill_the_form(driver, row):
@@ -41,13 +48,18 @@ def fill_the_form(driver, row):
         "labelEmail": row["Email"],
         "labelPhone": row["Phone Number"],
     }
+
+    input_elements = {
+        field: driver.find_element(By.XPATH, f"//input[@ng-reflect-name='{field}']")
+        for field in fields.keys()
+    }
+
     for field, value in fields.items():
-        xpath = f"//input[@ng-reflect-name='{field}']"
         try:
-            driver.find_element(By.XPATH, xpath).send_keys(str(value))
+            input_elements[field].send_keys(str(value))
         except Exception as e:
             logging.error(
-                f"Exception occurred with customer {row['First Name']} {row['Last Name ']}, error message: {e}!"
+                "Exception occurred with customer %s %s, error message: %s!",
+                row["First Name"], row["Last Name "], e
             )
-            continue
     driver.find_element(By.XPATH, "//input[@type='submit' and @value='Submit']").click()

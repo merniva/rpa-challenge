@@ -5,11 +5,11 @@ from requests import get
 
 def initialize_data_folder(name, path):
     """Check if folder and file exist."""
-    if not (os.path.exists(path)):
+    if not os.path.exists(path):
         # create a new directory if not exist already
         os.makedirs(path)
     if os.path.isfile(name):
-        # make sure to remove any old versions
+        # make sure to remove any old file versions
         os.remove(name)
 
 

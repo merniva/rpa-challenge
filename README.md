@@ -1,10 +1,5 @@
 # rpachallenge
 
-[![PyPI - Version](https://img.shields.io/pypi/v/rpachallenge.svg)](https://pypi.org/project/rpachallenge)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/rpachallenge.svg)](https://pypi.org/project/rpachallenge)
-
------
-
 ## Table of Contents
 
 - [Features](#features)
@@ -21,23 +16,27 @@ This project automatically downloads the Excel file from the RPAChallenge websit
 ## Installation
 
 1. Clone the repository using
-   git clone https://github.com/FIXTHIS/rpachallenge.git
+   git clone https://github.com/merniva/rpachallenge.git
 
 2. Create a virtual environment using Python 3.10 or higher:
-    python 3.10 -m venv .venv
+    `python 3.10 -m venv .venv`
     Activate on Windows with 
-    .venv\Scripts\activate
+    `.venv\Scripts\activate`
 
 3. Install the required dependencies using
-    pip install -r requirements.txt
+    `pip install -r requirements.txt`
 
 4. Install the project in editable mode for your usage with
-    pip install -e .
+    `pip install -e .`
 
 ## Usage
 
 - Run the main script from run.py:
-    python src/rpachallenge/run.py.
+    `python src/rpachallenge/run.py`
+- To run in headless mode:
+    `python src/rpachallenge/run.py --headless`
+
+Use `--headless` option for faster execution and running the script where a graphical interface is not available.
 
 ## Acknowledgements
 
@@ -56,9 +55,8 @@ rpachallenge/
 │   │   ├── run.py
 │   │   ├── data_handler.py
 │   │   ├── web_handler.py
-│   ├── requirements.txt
+├── tests
+│   ├── __init.py__
+│   ├── test_web_handler.py
 ├── README.md
-
-## License
-
-`rpachallenge` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+├── requirements.txt
