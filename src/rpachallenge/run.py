@@ -6,7 +6,6 @@ import argparse
 from data_handler import initialize_data_folder, read_file_to_dataframe
 from web_handler import setup_browser, teardown_browser, fill_the_form, start_submit
 
-MAX_ITERATIONS = 10
 SITE_URL = "https://www.rpachallenge.com/"
 FILE_URL = f"{SITE_URL}/assets/downloadFiles/challenge.xlsx"
 FILE_PATH = os.path.join(os.getcwd(), "input_data")
@@ -49,12 +48,6 @@ def main():
     """Main function for reading input file and submit information to web form."""
     args = parse_arguments()
     logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.INFO))
-    if args.iterations and args.iterations > MAX_ITERATIONS:
-        logging.warning(
-            "The specified iterations (%d) exceed the maximum allowed (%d). Limiting to %d iterations.",
-            args.iterations, MAX_ITERATIONS, MAX_ITERATIONS,
-        )
-        args.iterations = MAX_ITERATIONS
     try:
         for iteration in range(args.iterations or 1):
             logging.info("Starting iteration %d", iteration + 1)
