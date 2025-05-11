@@ -19,15 +19,15 @@ This project automatically downloads the Excel file from the RPAChallenge websit
    git clone https://github.com/merniva/rpachallenge.git
 
 2. Create a virtual environment using Python 3.10 or higher:
-    `python 3.10 -m venv .venv`
+    `py -3.10 -m venv .venv`
     Activate on Windows with 
     `.venv\Scripts\activate`
 
 3. Install the required dependencies using
-    `pip install -r requirements.txt`
+    `python -m pip install -r requirements.txt`
 
 4. Install the project in editable mode for your usage with
-    `pip install -e .`
+    `python -m pip install -e .`
 
 ## Usage
 
