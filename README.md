@@ -43,7 +43,7 @@ This project automatically downloads the Excel file from the RPAChallenge websit
     `python src/rpachallenge/run.py --headless`
 - To adjust the logging level, set --log-level parameter as INFO, WARNING or ERROR (default being INFO):
     `python src/rpachallenge/run.py --log-level ERROR` 
--To adjust the amount of iterations, set --iterations parameter from 1 to 10 (default being 1):
+- To adjust the amount of iterations, set --iterations parameter from 1 to 10 (default being 1):
     `python src/rpachallenge/run.py --iterations 4`
 
 You can also give multiple parameters, for example:
